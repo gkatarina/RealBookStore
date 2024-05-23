@@ -70,7 +70,7 @@ public class PersonsController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User current = (User)authentication.getPrincipal();
         if(Integer.parseInt(person.getId()) != current.getId()){
-            throw new AccessDeniedException("Forbidden");
+            throw new AccessDeniedException("blehhhh");
         }
 
         personRepository.update(person);
