@@ -1,5 +1,6 @@
 package com.urosdragojevic.realbookstore.repository;
 
+import com.urosdragojevic.realbookstore.audit.AuditLogger;
 import com.urosdragojevic.realbookstore.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +35,10 @@ public class UserRepository {
                 return new User(id, username1, password);
             }
         } catch (SQLException e) {
+            LOG.warn("Failed search for user using " + username);
             e.printStackTrace();
         }
+        AuditLogger.getAuditLogger(UserRepository.class).audit("Searching for user by name " + username);
         return null;
     }
 
@@ -46,6 +49,7 @@ public class UserRepository {
              ResultSet rs = statement.executeQuery(query)) {
             return rs.next();
         } catch (SQLException e) {
+            LOG.error("Failed to validate user for name " + username);
             e.printStackTrace();
         }
         return false;
@@ -58,7 +62,9 @@ public class UserRepository {
         ) {
             statement.executeUpdate(query);
         } catch (SQLException e) {
+            LOG.warn("Failed to remove user with id " + userId);
             e.printStackTrace();
         }
+        AuditLogger.getAuditLogger(UserRepository.class).audit("Removing user by id " + userId);
     }
 }

@@ -36,6 +36,7 @@ public class RoleRepository {
                 roles.add(new Role(id, name));
             }
         } catch (SQLException e) {
+            LOG.error("Failed to get user for role of role id " + userId);
             e.printStackTrace();
         }
         return roles;
